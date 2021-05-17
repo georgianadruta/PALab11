@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.Database;
-import com.example.demo.model.Friendship;
+import com.example.demo.database.Database;
+import com.example.demo.models.Friendship;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

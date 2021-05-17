@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.Database;
-import com.example.demo.model.Person;
+import com.example.demo.database.Database;
+import com.example.demo.models.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

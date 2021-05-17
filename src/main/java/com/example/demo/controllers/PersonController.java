@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.services.PersonService;
-import com.example.demo.model.Person;
+import com.example.demo.models.Person;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,6 @@ public class PersonController {
 
     /**
      * obtaining the list of the persons, via a HTTP GET request.
-     * @return
      */
     @GetMapping("/{id}")
     public static Person getPerson(@PathVariable("id") String id) {

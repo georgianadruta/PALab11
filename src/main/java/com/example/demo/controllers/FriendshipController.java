@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controllers;
 
 import com.example.demo.services.FriendshipService;
-import com.example.demo.model.Friendship;
+import com.example.demo.models.Friendship;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
