@@ -1,18 +1,24 @@
 package com.example.demo.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * a table which contains person's name
  *
  * primaryKey       name
  */
-@Data
+
 @EqualsAndHashCode
 @ToString
+@Getter
 public class Person{
+
     private final String id;
-    private final String name;
+    @Setter
+    private String name;
+
+    public Person(String id, String name) {
+        this.id=id;
+        this.name=name;
+    }
 }

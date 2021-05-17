@@ -1,20 +1,25 @@
 package com.example.demo.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * a table which contains friendships for each person
- *
+ * <p>
  * primaryKey       strangeKey name                                      name
  * an unique id     an id corresponding with a name from person table    friend's name
  */
-@Data
+@Getter
 @EqualsAndHashCode
 @ToString
 public class Friendship {
     private final String primaryKey;
     private final String strangeKey;
-    private final String name;
+    @Setter
+    private String name;
+
+    public Friendship(String primaryKey, String strangeKey, String name) {
+        this.primaryKey = primaryKey;
+        this.strangeKey = strangeKey;
+        this.name = name;
+    }
 }

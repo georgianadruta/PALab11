@@ -18,33 +18,45 @@ public class FriendshipService {
     public static List<Friendship> friendshipList = new ArrayList<>();
 
 
-    public static void addFriendship(String key, String id, String name) {
+    public static String addFriendship(String key, String id, String name) {
         String query = "INSERT INTO friendships(primaryKey, strangeKey, name) VALUES('" + key + "','" + id + "','" + name + "')";
         db.doUpdate(query);
         friendshipList.add(new Friendship(key, id, name));
-        logger.info(name + " has been added to the list.");
+        return name + " has been added to the list.";
     }
 
 
-    public static void addFriendship(Friendship friendship) {
+    public static String addFriendship(Friendship friendship) {
         String query = "INSERT INTO friendships(primaryKey, strangeKey, name) values('" + friendship.getPrimaryKey() + "','" + friendship.getStrangeKey() + "','" + friendship.getName() + "')";
         db.doUpdate(query);
         friendshipList.add(new Friendship(friendship.getPrimaryKey(), friendship.getStrangeKey(), friendship.getName()));
-        logger.info(friendship.getName() + " has been added to the database.");
+        return friendship.getName() + " has been added to the database.";
     }
 
 
-    public static void updateFriendship(String id, String newName) {
+    public static String updateFriendship(String id, String newName) {
         String query = "UPDATE friendships SET name= '" + newName + "' where primaryKey='" + id + "'";
         db.doUpdate(query);
-        logger.info("The person's friend with id=" + id + " got updated to " + newName);
+        for (Friendship friendship : friendshipList) {
+            if (friendship.getPrimaryKey().equals(id)) {
+                friendship.setName(newName);
+                break;
+            }
+        }
+        return "The person's friend with id=" + id + " got updated to " + newName;
     }
 
 
-    public static void deletePlayer(String id) {
+    public static String deletePlayer(String id) {
         String query = "DELETE FROM friendships WHERE primaryKey='" + id + "'";
         db.doUpdate(query);
-        logger.info("The player with the id " + id + " has been deleted successfully");
+        for (int i = 0; i < friendshipList.size(); i++) {
+            if (friendshipList.get(i).getPrimaryKey().equals(id)) {
+                friendshipList.remove(i);
+                return "The player with the id " + id + " has been deleted successfully";
+            }
+        }
+        return "The player with the id " + id + " npt found.";
     }
 
     public static List<Friendship> showList() {

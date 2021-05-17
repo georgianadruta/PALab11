@@ -17,7 +17,7 @@ public class DemoApplication {
     public String command() {
         return "<h1>" + PersonService.addPerson("1", "Ana") + "</h1>\n<h1>" +
                 PersonService.updatePerson("1", "Ana-Maria") + "</h1>\n<h1>" +
-                PersonService.showList() + "</h1>";
+                PersonService.showList() + "</h1>\n<h1>" + PersonService.deletePlayer("5") + "</h1>";
 
     }
 

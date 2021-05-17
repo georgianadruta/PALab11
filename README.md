@@ -127,7 +127,7 @@ The task consists of:<br />
 - [X] Test your services using the browser and/or Postman.
 ### Output
 
-![image](https://user-images.githubusercontent.com/75542257/118446005-cef0d880-b6f7-11eb-8ff6-06edc77c4ab3.png)
+![image](https://user-images.githubusercontent.com/75542257/118449491-e205a780-b6fb-11eb-9b87-3b5f7dbb9cf5.png)
 
 ## Optional
 

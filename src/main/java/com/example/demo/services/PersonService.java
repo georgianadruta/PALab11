@@ -34,13 +34,25 @@ public class PersonService {
     public static String updatePerson(String id, String newName) {
         String query = "UPDATE persons SET name= '" + newName + "' WHERE id='" + id + "'";
         db.doUpdate(query);
+        for (Person person : personList) {
+            if (person.getId().equals(id)) {
+                person.setName(newName);
+                break;
+            }
+        }
         return "Person with id=" + id + " got updated to " + newName;
     }
 
     public static String deletePlayer(String id) {
         String query = "DELETE FROM persons WHERE id='" + id + "'";
         db.doUpdate(query);
-        return "The person with the id " + id + " has been deleted successfully";
+        for(int i=0;i<personList.size();i++){
+            if(personList.get(i).getId().equals(id)){
+                personList.remove(i);
+                return "The person with the id " + id + " has been deleted successfully";
+            }
+        }
+        return "The person with the id " + id + " not found";
     }
 
     public static List<Person> showList() {
