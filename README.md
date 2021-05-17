@@ -126,9 +126,9 @@ The task consists of:<br />
   - deleting a person, via a HTTP DELETE request.
 - [X] Test your services using the browser and/or Postman.
 ### Output
-```
+
 ![image](https://user-images.githubusercontent.com/75542257/118446005-cef0d880-b6f7-11eb-8ff6-06edc77c4ab3.png)
-```
+
 ## Optional
 
 The task consists of:<br />
