@@ -26,7 +26,7 @@ public class Database {
     private Database() {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "bda", "sql");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student", "student");
             logger.info("Connected to database");
         } catch (Exception exception) {
             logger.info("Exception in database constructor.");

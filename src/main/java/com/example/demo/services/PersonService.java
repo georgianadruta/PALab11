@@ -17,30 +17,30 @@ public class PersonService {
     private static final Database db = Database.getInstance();
     private static final List<Person> personList = new ArrayList<>();
 
-    public static void addPerson(String id, String name) {
+    public static String addPerson(String id, String name) {
         String query = "INSERT INTO persons(id, name) VALUES('" + id + "','" + name + "')";
         db.doUpdate(query);
         personList.add(new Person(id, name));
-        logger.info(name + " has been added to the list.");
+        return name + " has been added to the list.";
     }
 
-    public static void addPlayer(Person person) {
+    public static String addPlayer(Person person) {
         String query = "INSERT INTO persons(id, name) VALUES('" + person.getId() + "','" + person.getName() + "')";
         db.doUpdate(query);
         personList.add(new Person(person.getId(), person.getName()));
-        logger.info(person.getName() + " has been added to the database.");
+        return person.getName() + " has been added to the database.";
     }
 
-    public static void updatePerson(String id, String newName) {
+    public static String updatePerson(String id, String newName) {
         String query = "UPDATE persons SET name= '" + newName + "' WHERE id='" + id + "'";
         db.doUpdate(query);
-        logger.info("Person with id=" + id + " got updated to " + newName);
+        return "Person with id=" + id + " got updated to " + newName;
     }
 
-    public static void deletePlayer(String id) {
+    public static String deletePlayer(String id) {
         String query = "DELETE FROM persons WHERE id='" + id + "'";
         db.doUpdate(query);
-        logger.info("The person with the id " + id + " has been deleted successfully");
+        return "The person with the id " + id + " has been deleted successfully";
     }
 
     public static List<Person> showList() {
