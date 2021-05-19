@@ -19,7 +19,7 @@ public class DemoApplication {
         return "<h1>" + PersonService.addPerson("1", "Ana") + "</h1>\n<h1>" +
                 "<h1>" + PersonService.addPerson("2", "Andrei") + "</h1>\n<h1>" +
                 PersonService.updatePerson("1", "Ana-Maria") + "</h1>\n<h1>" +
-                FriendshipService.addFriendship("1", "1", "Ana-Maria") + "</h1>\n<h1>" +
+                FriendshipService.addFriendship("1", "1", "2") + "</h1>\n<h1>" +
                 PersonService.showList() + "</h1>\n<h1>" + FriendshipService.showList() + "</h1>";
     }
 
