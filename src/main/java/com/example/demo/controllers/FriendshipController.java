@@ -2,13 +2,13 @@ package com.example.demo.controllers;
 
 import com.example.demo.services.FriendshipService;
 import com.example.demo.models.Friendship;
+import com.example.demo.services.PersonService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * a REST controller containing methods for:
@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/friendships")
 public class FriendshipController {
-    List<Friendship> friendshipList = new ArrayList<>();
+    private static final List<Friendship> friendshipList = new ArrayList<>();
 
     @GetMapping
     public List<Friendship> getFriendship() {
@@ -28,12 +28,20 @@ public class FriendshipController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Friendship> getFriendship(@PathVariable String id, @RequestParam("name") String name) {
-        String key = String.valueOf(friendshipList.size() + 1);
-        Friendship friendship = new Friendship(key, id, name);
-        friendshipList.add(friendship);
-        return new ResponseEntity<>(friendship, new HttpHeaders(), HttpStatus.OK);
+    public Friendship getFriendship(@PathVariable int id) {
+        for (int i = 0; i < FriendshipService.friendshipList.size(); i++) {
+            if (Integer.parseInt(FriendshipService.friendshipList.get(i).getId())==id) {
+                return FriendshipService.friendshipList.get(i);
+            }
+        }
+        return null;
     }
+
+    @GetMapping("/count")
+    public static int getCountFriendships(){
+        return FriendshipService.friendshipList.size();
+    }
+
 
     @PostMapping
     public ResponseEntity<String> createFriendship(@RequestBody Friendship friendship) {
@@ -53,4 +61,15 @@ public class FriendshipController {
         ResponseEntity<String> response = FriendshipController.deleteFriendship(id);
         return new ResponseEntity<>(String.valueOf(response), new HttpHeaders(), HttpStatus.OK);
     }
+
+    public static ResponseEntity<String> getKLeastConnected(@PathVariable int k) {
+        String response =  FriendshipService.getKLeastConnected(k);
+        return new ResponseEntity<>( response, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    public static ResponseEntity<String> getKMostConnected(@PathVariable int k) {
+        String response = FriendshipService.getKMostConnected(k);
+        return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
+    }
 }
+

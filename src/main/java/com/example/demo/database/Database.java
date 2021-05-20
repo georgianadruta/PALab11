@@ -4,57 +4,43 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Logger;
 
-/**
- * an helpful class for database
- */
 public class Database {
     public ResultSet rs;
     private Connection con;
 
-    private static final Logger logger= Logger.getLogger(String.valueOf(Database.class));
-    private static final Database ourInstance = new Database();
+    private static Database ourInstance = new Database();
 
     public static Database getInstance() {
         return ourInstance;
     }
 
-    /**
-     * establishes a connection
-     */
-    private Database() {
+    private Database() { //establishes a connection
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "student", "STUDENT");
-            logger.info("Connected to database");
-        } catch (Exception exception) {
-            logger.info("Exception in database constructor.");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "student", "STUDENT");
+            System.out.println("Connected to database");
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
-    /**
-     * will execute any query
-     */
-    public ResultSet setResultSet(String query) {
+    public ResultSet setResultSet(String query) { //will execute any query
         try {
             Statement stmt = con.createStatement();
             rs = stmt.executeQuery(query);
-        } catch (Exception exception) {
-            logger.info("Exception in setResultSet method.");
+        } catch (Exception e) {
+            System.out.println(e);
         }
         return rs;
     }
 
-    /**
-     * will execute updates
-     */
-    public void doUpdate(String update) {
+    public void doUpdate(String update) { //will execute updates
         try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate(update);
-        } catch (Exception exception) {
-           logger.info("Exception in doUpdate method.");
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
