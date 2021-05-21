@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.custom.CustomException;
 import com.example.demo.models.Friendship;
 import com.example.demo.services.FriendshipService;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/friendships")
 public class FriendshipController {
-    private static final List<Friendship> friendshipList = new ArrayList<>();
 
     @GetMapping
     public List<Friendship> getFriendship() {
@@ -27,13 +27,13 @@ public class FriendshipController {
     }
 
     @GetMapping("/{id}")
-    public Friendship getFriendship(@PathVariable int id) {
+    public Friendship getFriendship(@PathVariable String id) {
         for (int i = 0; i < FriendshipService.friendshipList.size(); i++) {
-            if (Integer.parseInt(FriendshipService.friendshipList.get(i).getId()) == id) {
+            if (FriendshipService.friendshipList.get(i).getId().equals(id)) {
                 return FriendshipService.friendshipList.get(i);
             }
         }
-        return null;
+        throw new CustomException("Not found");
     }
 
     @GetMapping("/count")
@@ -41,24 +41,23 @@ public class FriendshipController {
         return FriendshipService.friendshipList.size();
     }
 
-
-    @PostMapping
-    public ResponseEntity<String> createFriendship(@RequestBody Friendship friendship) {
-        friendshipList.add(friendship);
-        return new ResponseEntity<>("Friendship created successfully", HttpStatus.CREATED);
+    @PostMapping("/{id}/{anotherId}")
+    public ResponseEntity<String> updateFriendship(@PathVariable("id") String id, @PathVariable("anotherId") String anotherId) {
+        FriendshipService.updateFriendship(id, anotherId);
+        return new ResponseEntity<>("Friendship updated successfully", HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateFriendship(@PathVariable String id, @RequestParam String name) {
-        FriendshipService.updateFriendship(id, name);
-        return new ResponseEntity<>(
-                "Person's name updated successfully to " + name, HttpStatus.OK);
+    @PutMapping("/{id}/{anotherId}")
+    public ResponseEntity<String> addFriendship(@PathVariable("id") String id, @PathVariable("anotherId") String anotherId) {
+        String key = String.valueOf(FriendshipService.friendshipList.size());
+        FriendshipService.addFriendship(key, id, anotherId);
+        return new ResponseEntity<>("Friendship added successfully", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     public static ResponseEntity<String> deleteFriendship(@PathVariable String id) {
         FriendshipService.deleteFriendship(id);
-        return new ResponseEntity<>("Delete with success", new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>("Deleted successfully", new HttpHeaders(), HttpStatus.OK);
     }
 
     public static ResponseEntity<String> getKLeastConnected(@PathVariable int k) {

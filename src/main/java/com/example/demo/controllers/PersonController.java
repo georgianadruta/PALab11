@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.custom.CustomException;
 import com.example.demo.services.PersonService;
 import com.example.demo.models.Person;
 import org.springframework.http.HttpHeaders;
@@ -7,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/persons")
 public class PersonController {
-    static List<Person> personList = new ArrayList<>();
-
-    public PersonController() {
-    }
 
     /**
      * obtaining the list of the persons, via a HTTP GET request.
@@ -40,13 +36,13 @@ public class PersonController {
      * obtaining the list of the persons, via a HTTP GET request.
      */
     @GetMapping("/{id}")
-    public static Person getPerson(@PathVariable("id") int id) {
+    public static Person getPerson(@PathVariable("id") String id) {
         for (int i = 0; i < PersonService.personList.size(); i++) {
-            if (Integer.parseInt(PersonService.personList.get(i).getId()) == id) {
+            if (PersonService.personList.get(i).getId().equals(id)) {
                 return PersonService.personList.get(i);
             }
         }
-        return null;
+        throw new CustomException("Not found");
     }
 
     @GetMapping("/count")
@@ -57,21 +53,20 @@ public class PersonController {
     /**
      * adding a new person in the database, via a HTTP POST request.
      */
-    @PostMapping("/{name}")
-    public ResponseEntity<String> createPerson(@RequestParam("name") String name) {
-        String id = String.valueOf(PersonService.personList.size());
-        personList.add(new Person(id, name));
-        PersonService.addPerson(id, name);
-        return new ResponseEntity<>("Person added successfully, id: " + id, HttpStatus.CREATED);
+    @PostMapping("/{id}/{name}")
+    public ResponseEntity<String> updatePerson(@PathVariable("id") String id, @PathVariable("name") String name) {
+        PersonService.updatePerson(id, name);
+        return new ResponseEntity<>("Person's name updated successfully", new HttpHeaders(), HttpStatus.OK);
     }
 
     /**
      * modifying the name of a person, via a HTTP PUT request.
      */
-    @PutMapping("/{id}/{name}")
-    public ResponseEntity<String> updatePerson(@PathVariable String id, @RequestParam("name") String name) {
-        PersonService.updatePerson(id, name);
-        return new ResponseEntity<>("Person's name updated successfully to " + name, HttpStatus.OK);
+    @PutMapping("/{name}")
+    public ResponseEntity<String> addPerson(@PathVariable("name") String name) {
+        String id = String.valueOf(PersonService.personList.size());
+        PersonService.addPerson(id, name);
+        return new ResponseEntity<>("Person added successfully", new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

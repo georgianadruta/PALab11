@@ -30,7 +30,7 @@ public class DemoApplication {
         FriendshipService.addFriendship("3", "1", "4");
         FriendshipService.addFriendship("4", "1", "5");
         FriendshipService.addFriendship("5", "1", "6");
-        FriendshipService.addFriendship("5", "1", "7");
+        FriendshipService.addFriendship("6", "1", "7");
         return "<h1>Hello world!</h1>";
     }
 
