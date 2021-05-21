@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,13 +44,16 @@ public class PersonController {
         throw new CustomException("Not found");
     }
 
+    /**
+     * obtaining the count of the persons, via a HTTP GET request.
+     */
     @GetMapping("/count")
     public static int getCountPersons() {
         return PersonService.personList.size();
     }
 
     /**
-     * adding a new person in the database, via a HTTP POST request.
+     * modifying the name of a person, via a HTTP POST request.
      */
     @PostMapping("/{id}/{name}")
     public ResponseEntity<String> updatePerson(@PathVariable("id") String id, @PathVariable("name") String name) {
@@ -60,7 +62,7 @@ public class PersonController {
     }
 
     /**
-     * modifying the name of a person, via a HTTP PUT request.
+     * adding a new person in the database, via a HTTP PUT request.
      */
     @PutMapping("/{name}")
     public ResponseEntity<String> addPerson(@PathVariable("name") String name) {

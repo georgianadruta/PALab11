@@ -9,10 +9,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * helpful class that determines in linear time all persons who are so important
+ * to the social network such that, if one of them were eliminated,
+ * the network would become disconnected.
+ *
+ * eliminate the people with the most friends one by one until the graph is disconnected.
+ */
 public class ImportantPersonsService {
     private final int[][] adjacencyMatrix;
     private final Map<Person, Integer> frequencyList;
 
+    /**
+     * Initializes the adjacency matrix and the friends map
+     * (key: person, value: the number of friends)
+     */
     public ImportantPersonsService() {
         List<Person> personList = PersonService.personList;
         List<Friendship> friendshipList = FriendshipService.friendshipList;
@@ -35,6 +46,9 @@ public class ImportantPersonsService {
         }
     }
 
+    /**
+     * get the person with required id
+     */
     private Person getPersonWithId(String id) {
         for (Person person : PersonService.personList) {
             if (person.getId().equals(id)) {
@@ -44,6 +58,9 @@ public class ImportantPersonsService {
         return null;
     }
 
+    /**
+     * get the person with the most friends
+     */
     private Person getTheMostImportantPerson() {
         Person importantPerson = null;
         int max = 0;
@@ -57,6 +74,9 @@ public class ImportantPersonsService {
         return importantPerson;
     }
 
+    /**
+     * get the list with all persons who are so important to the social network
+     */
     public List<Person> getImportantPersonList() {
         List<Person> importantPersonList = new ArrayList<>();
         while (isConnected()) {

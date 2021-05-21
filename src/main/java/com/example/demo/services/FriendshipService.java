@@ -19,6 +19,9 @@ public class FriendshipService {
     public static List<Friendship> friendshipList = new ArrayList<>();
 
 
+    /**
+     * add friendship in friendships table
+     */
     public static void addFriendship(String key, String id, String anotherId) {
         friendshipList.add(new Friendship(key, id, anotherId));
         Connection con = Database.getConnection();
@@ -33,7 +36,9 @@ public class FriendshipService {
         }
     }
 
-
+    /**
+     * add friendship in friendships table
+     */
     public static void addFriendship(Friendship friendship) {
         friendshipList.add(friendship);
         Connection con = Database.getConnection();
@@ -48,6 +53,9 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * update friendship in friendships table
+     */
     public static void updateFriendship(String id, String anotherId) {
         var con = Database.getConnection();
         for (Friendship friendship : friendshipList) {
@@ -66,6 +74,9 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * delete friendship with the given id in friendships table
+     */
     public static void deleteFriendship(String id) {
         var con = Database.getConnection();
         try {
@@ -78,6 +89,9 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * get the friendships table
+     */
     public static List<Friendship> showList() {
         if (friendshipList.size() > 0) {
             return friendshipList;
@@ -86,6 +100,9 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * determining the first k most connected (popular) persons in the network
+     */
     public static String getKMostConnected(int k) {
         List<Person> list = new ArrayList<>();
         for (Map.Entry<Person, Integer> elem : getFrequencyList().entrySet()) {
@@ -100,6 +117,9 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * determining the first k least connected (popular) persons in the network
+     */
     public static String getKLeastConnected(int k) {
         List<Person> list = new ArrayList<>();
         for (Map.Entry<Person, Integer> elem : getFrequencyList().entrySet()) {
@@ -114,6 +134,10 @@ public class FriendshipService {
         }
     }
 
+    /**
+     * helpful method to determining the first k least/most connected (popular) persons in the network
+     * returns a map by form (key: person, value: the number of friends)
+     */
     private static Map<Person, Integer> getFrequencyList() {
         Map<Person, Integer> frequencyList = new HashMap<>();
         for (int i = 0; i < PersonService.personList.size(); i++) {

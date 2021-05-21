@@ -20,6 +20,9 @@ public class PersonService {
     private static final Logger logger = Logger.getLogger(String.valueOf(PersonService.class));
     public static final List<Person> personList = new ArrayList<>();
 
+    /**
+     * add person in persons table
+     */
     public static void addPerson(Person person) {
         personList.add(person);
         Connection con = Database.getConnection();
@@ -33,6 +36,9 @@ public class PersonService {
         }
     }
 
+    /**
+     * add person in persons table
+     */
     public static void addPerson(String id, String name) {
         personList.add(new Person(id, name));
         Connection con = Database.getConnection();
@@ -46,6 +52,9 @@ public class PersonService {
         }
     }
 
+    /**
+     * update person with the give id in persons table
+     */
     public static void updatePerson(String id, String name) {
         var con = Database.getConnection();
         for (Person person : personList) {
@@ -64,6 +73,9 @@ public class PersonService {
         }
     }
 
+    /**
+     * delete person with the given id in persons table
+     */
     public static void deletePerson(String id) {
         var con = Database.getConnection();
         try {
@@ -76,6 +88,9 @@ public class PersonService {
         }
     }
 
+    /**
+     * get the persons table
+     */
     public static List<Person> showList() {
         if (personList.size() > 0) {
             return personList;

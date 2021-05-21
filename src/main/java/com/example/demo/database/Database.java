@@ -2,6 +2,9 @@ package com.example.demo.database;
 
 import java.sql.*;
 
+/**
+ * helpful class to manage access to db
+ */
 public class Database {
     private static Connection con = null;
 

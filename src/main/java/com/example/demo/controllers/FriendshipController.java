@@ -21,11 +21,17 @@ import java.util.*;
 @RequestMapping("/friendships")
 public class FriendshipController {
 
+    /**
+     * obtaining the list of the friendships, via a HTTP GET request.
+     */
     @GetMapping
     public List<Friendship> getFriendship() {
         return FriendshipService.showList();
     }
 
+    /**
+     * obtaining the list of the friendships, via a HTTP GET request.
+     */
     @GetMapping("/{id}")
     public Friendship getFriendship(@PathVariable String id) {
         for (int i = 0; i < FriendshipService.friendshipList.size(); i++) {
@@ -36,17 +42,26 @@ public class FriendshipController {
         throw new CustomException("Not found");
     }
 
+    /**
+     * obtaining the count of the friendships, via a HTTP GET request.
+     */
     @GetMapping("/count")
     public static int getCountFriendships() {
         return FriendshipService.friendshipList.size();
     }
 
+    /**
+     * modifying the  friendship, via a HTTP POST request.
+     */
     @PostMapping("/{id}/{anotherId}")
     public ResponseEntity<String> updateFriendship(@PathVariable("id") String id, @PathVariable("anotherId") String anotherId) {
         FriendshipService.updateFriendship(id, anotherId);
         return new ResponseEntity<>("Friendship updated successfully", HttpStatus.CREATED);
     }
 
+    /**
+     * adding a new friendship in the database, via a HTTP PUT request.
+     */
     @PutMapping("/{id}/{anotherId}")
     public ResponseEntity<String> addFriendship(@PathVariable("id") String id, @PathVariable("anotherId") String anotherId) {
         String key = String.valueOf(FriendshipService.friendshipList.size());
@@ -54,20 +69,13 @@ public class FriendshipController {
         return new ResponseEntity<>("Friendship added successfully", HttpStatus.OK);
     }
 
+    /**
+     * deleting a friendship, via a HTTP DELETE request.
+     */
     @DeleteMapping(value = "/{id}")
     public static ResponseEntity<String> deleteFriendship(@PathVariable String id) {
         FriendshipService.deleteFriendship(id);
         return new ResponseEntity<>("Deleted successfully", new HttpHeaders(), HttpStatus.OK);
-    }
-
-    public static ResponseEntity<String> getKLeastConnected(@PathVariable int k) {
-        String response = FriendshipService.getKLeastConnected(k);
-        return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
-    }
-
-    public static ResponseEntity<String> getKMostConnected(@PathVariable int k) {
-        String response = FriendshipService.getKMostConnected(k);
-        return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
     }
 }
 

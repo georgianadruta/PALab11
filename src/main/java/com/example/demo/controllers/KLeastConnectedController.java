@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/kLeastConnected")
 public class KLeastConnectedController {
 
+    /**
+     * obtaining the list of the k least connected persons in the network, via a HTTP GET request.
+     */
     @GetMapping("/{k}")
     public String getKLeastConnected(@PathVariable("k") String k) {
         return FriendshipService.getKLeastConnected(Integer.parseInt(k));

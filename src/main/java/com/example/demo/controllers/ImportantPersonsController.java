@@ -12,9 +12,6 @@ import java.util.List;
 @RequestMapping("/importantPersons")
 public class ImportantPersonsController {
 
-    public ImportantPersonsController() {
-    }
-
     /**
      * obtaining the list of the persons, via a HTTP GET request.
      */
