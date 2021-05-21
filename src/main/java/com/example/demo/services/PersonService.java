@@ -4,8 +4,9 @@ import com.example.demo.custom.CustomException;
 import com.example.demo.database.Database;
 import com.example.demo.models.Person;
 import lombok.Data;
+import lombok.var;
 
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,70 +18,69 @@ import java.util.logging.Logger;
 @Data
 public class PersonService {
     private static final Logger logger = Logger.getLogger(String.valueOf(PersonService.class));
-    private static Database db = Database.getInstance();
     public static final List<Person> personList = new ArrayList<>();
 
-    public static String addPerson(String id, String name) {
-        String query = "INSERT INTO persons(id, name) VALUES('" + id + "','" + name + "')";
-        db.doUpdate(query);
+    public static void addPerson(Person person) {
+        personList.add(person);
+        Connection con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("INSERT INTO PERSONS VALUES (?,?)");
+            statement.setString(1, person.getId());
+            statement.setString(2, person.getName());
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in addPerson method.");
+        }
+    }
+
+    public static void addPerson(String id, String name) {
         personList.add(new Person(id, name));
-        return name + " has been added to the list." + "\n" + personList;
+        Connection con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("INSERT INTO PERSONS VALUES (?,?)");
+            statement.setString(1, id);
+            statement.setString(2, name);
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in addPerson method.");
+        }
     }
 
-    public static String addPerson(Person person) {
-        String query = "INSERT INTO persons(id, name) VALUES('" + person.getId() + "','" + person.getName() + "')";
-        db.doUpdate(query);
-        personList.add(new Person(person.getId(), person.getName()));
-        return person.getName() + " has been added to the list." + "\n" + personList;
-    }
-
-    public static String updatePerson(String id, String newName) {
-        String query = "UPDATE persons SET name= '" + newName + "' WHERE id='" + id + "'";
-        db.doUpdate(query);
+    public static void updatePerson(String id, String name) {
+        var con = Database.getConnection();
         for (Person person : personList) {
             if (person.getId().equals(id)) {
-                person.setName(newName);
-                return "Person with id=" + id + " got updated to " + newName + "\n" + personList;
+                person.setName(name);
+                break;
             }
         }
-        throw new CustomException("The person with the id " + id + " not found"+ "\n" + personList);
+        try {
+            var statement = con.prepareStatement("UPDATE PERSONS SET NAME=? WHERE ID=?");
+            statement.setString(1, name);
+            statement.setString(2, id);
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in updatePerson method.");
+        }
     }
 
-    public static String deletePerson(String id) {
-        String query = "DELETE FROM persons WHERE id='" + id + "'";
-        db.doUpdate(query);
-        for (int i = 0; i < personList.size(); i++) {
-            if (personList.get(i).getId().equals(id)) {
-                personList.remove(i);
-                return "The person with the id " + id + " has been deleted successfully" + "\n" + personList;
-            }
+    public static void deletePerson(String id) {
+        var con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("DELETE FROM PERSONS WHERE ID=?");
+            statement.setString(1, id);
+            statement.executeQuery();
+            personList.removeIf(person -> person.getId().equals(id));
+        } catch (SQLException exception) {
+            logger.info("Exception in deletePerson method.");
         }
-        throw new CustomException("The person with the id " + id + " not found"+ "\n" + personList);
     }
 
     public static List<Person> showList() {
-        ResultSet rs = db.setResultSet("SELECT id, name FROM persons");
-        try {
-            while (rs.next()) {
-                Person person = new Person(rs.getString(1), rs.getString(2));
-                personList.add(person);
-            }
-        } catch (Exception exception) {
-            logger.info("Empty table");
+        if (personList.size() > 0) {
+            return personList;
+        } else {
+            throw new CustomException("Empty list.");
         }
-        return personList;
-    }
-
-    public static Person showPerson(String id) {
-        Person person = null;
-        ResultSet rs = db.setResultSet("SELECT id, name FROM persons WHERE id= " + id + "'");
-        try {
-            while (rs.next()) {
-                person = new Person(rs.getString(1), rs.getString(2));
-            }
-        } catch (SQLException exception) {
-            throw new CustomException("Person not found for id=" + id);
-        }
-        return person;
     }
 }

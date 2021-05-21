@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.custom.CustomException;
 import com.example.demo.models.Friendship;
 import com.example.demo.models.Person;
 
@@ -11,7 +12,6 @@ import java.util.Map;
 public class ImportantPersonsService {
     private final int[][] adjacencyMatrix;
     private final Map<Person, Integer> frequencyList;
-
 
     public ImportantPersonsService() {
         List<Person> personList = PersonService.personList;
@@ -67,7 +67,11 @@ public class ImportantPersonsService {
                 adjacencyMatrix[Integer.parseInt(person.getId())][j] = 0;
             }
         }
-        return importantPersonList;
+        if (importantPersonList.size() > 0) {
+            return importantPersonList;
+        } else {
+            throw new CustomException("Empty list.");
+        }
     }
 
     /**

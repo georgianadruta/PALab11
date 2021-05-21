@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class PersonController {
     @GetMapping("/{id}")
     public static Person getPerson(@PathVariable("id") int id) {
         for (int i = 0; i < PersonService.personList.size(); i++) {
-            if (Integer.parseInt(PersonService.personList.get(i).getId())==id) {
+            if (Integer.parseInt(PersonService.personList.get(i).getId()) == id) {
                 return PersonService.personList.get(i);
             }
         }
@@ -78,7 +79,7 @@ public class PersonController {
      */
     @DeleteMapping(value = "/{id}")
     public static ResponseEntity<String> deletePerson(@PathVariable String id) {
-        ResponseEntity<String> response = PersonController.deletePerson(id);
-        return new ResponseEntity<>(String.valueOf(response), new HttpHeaders(), HttpStatus.OK);
+        PersonService.deletePerson(id);
+        return new ResponseEntity<>("Deleted successfully", new HttpHeaders(), HttpStatus.OK);
     }
 }

@@ -4,13 +4,11 @@ import com.example.demo.custom.CustomException;
 import com.example.demo.database.Database;
 import com.example.demo.models.Friendship;
 import com.example.demo.models.Person;
+import lombok.var;
 
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -18,77 +16,74 @@ import java.util.logging.Logger;
  */
 public class FriendshipService {
     private static final Logger logger = Logger.getLogger(String.valueOf(FriendshipService.class));
-    private static final Database db = Database.getInstance();
     public static List<Friendship> friendshipList = new ArrayList<>();
 
 
-    public static String addFriendship(String key, String id, String anotherId) {
-        String query = "INSERT INTO friendships(id, personId, anotherPersonId) VALUES('" + key + "','" + id + "','" + anotherId + "')";
-        db.doUpdate(query);
+    public static void addFriendship(String key, String id, String anotherId) {
         friendshipList.add(new Friendship(key, id, anotherId));
-        return anotherId + " has been added to the list." + "\n" + friendshipList;
+        Connection con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("INSERT INTO FRIENDSHIPS VALUES (?,?,?)");
+            statement.setString(1, key);
+            statement.setString(2, id);
+            statement.setString(3, anotherId);
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in addPerson method.");
+        }
     }
 
 
-    public static String addFriendship(Friendship friendship) {
-        String query = "INSERT INTO friendships(id, personId, anotherPersonId) values('" + friendship.getId() + "','" + friendship.getPersonId() + "','" + friendship.getAnotherPersonId() + "')";
-        db.doUpdate(query);
-        friendshipList.add(new Friendship(friendship.getId(), friendship.getPersonId(), friendship.getAnotherPersonId()));
-        return friendship.getAnotherPersonId() + " has been added to the database." + "\n" + friendshipList;
+    public static void addFriendship(Friendship friendship) {
+        friendshipList.add(friendship);
+        Connection con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("INSERT INTO FRIENDSHIPS VALUES (?,?,?)");
+            statement.setString(1, friendship.getId());
+            statement.setString(2, friendship.getPersonId());
+            statement.setString(3, friendship.getAnotherPersonId());
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in addPerson method.");
+        }
     }
 
-
-    public static String updateFriendship(String id, String anotherId) {
-        String query = "UPDATE friendships SET anotherPersonId= '" + anotherId + "' where id='" + id + "'";
-        db.doUpdate(query);
+    public static void updateFriendship(String id, String anotherId) {
+        var con = Database.getConnection();
         for (Friendship friendship : friendshipList) {
             if (friendship.getId().equals(id)) {
                 friendship.setAnotherPersonId(anotherId);
-                return "The person's friend with id=" + id + " got updated to " + anotherId + "\n" + friendshipList;
+                break;
             }
         }
-        return "The person's friend with id=" + id + " not found. " + "\n" + friendshipList;
+        try {
+            var statement = con.prepareStatement("UPDATE FRIENDSHIPS SET ANOTHERPERSONID=? WHERE ID=?");
+            statement.setString(1, anotherId);
+            statement.setString(2, id);
+            statement.executeQuery();
+        } catch (SQLException exception) {
+            logger.info("Exception in updateFriendship method.");
+        }
     }
 
-
-    public static String deleteFriendship(String id) {
-        String query = "DELETE FROM friendships WHERE id='" + id + "'";
-        db.doUpdate(query);
-        for (int i = 0; i < friendshipList.size(); i++) {
-            if (friendshipList.get(i).getId().equals(id)) {
-                friendshipList.remove(i);
-                return "The player with the id=" + id + " has been deleted successfully" + "\n" + friendshipList;
-            }
+    public static void deleteFriendship(String id) {
+        var con = Database.getConnection();
+        try {
+            var statement = con.prepareStatement("DELETE FROM FRIENDSHIPS WHERE ID=?");
+            statement.setString(1, id);
+            statement.executeQuery();
+            friendshipList.removeIf(friendship -> friendship.getId().equals(id));
+        } catch (SQLException exception) {
+            logger.info("Exception in deleteFriendship method.");
         }
-        throw new CustomException("The friendship with the id=" + id + " not found." + "\n" + friendshipList);
     }
 
     public static List<Friendship> showList() {
-        ResultSet rs = db.setResultSet("SELECT id, personId, anotherPersonId FROM friendships");
-        try {
-            while (rs.next()) {
-                Friendship friendship = new Friendship(rs.getString(1), rs.getString(2), rs.getString(3));
-                friendshipList.add(friendship);
-            }
-        } catch (Exception exception) {
-            logger.info("Empty table");
+        if (friendshipList.size() > 0) {
+            return friendshipList;
+        } else {
+            throw new CustomException("Empty table");
         }
-        return friendshipList;
-    }
-
-    public static List<Friendship> showFriendship(String id) {
-        List<Friendship> friendList = new ArrayList<>();
-        ResultSet rs = db.setResultSet("SELECT id, personId, anotherPersonId FROM friendships WHERE id= '" + id + "'");
-        try {
-            while (rs.next()) {
-                if (rs.getString(1).equals(id)) {
-                    friendList.add(new Friendship(rs.getString(1), rs.getString(2), rs.getString(3)));
-                }
-            }
-        } catch (SQLException e) {
-            throw new CustomException("The friendship with the id=" + id + " not found" + "\n" + friendshipList);
-        }
-        return friendList;
     }
 
     public static String getKMostConnected(int k) {
@@ -98,7 +93,11 @@ public class FriendshipService {
                 list.add(elem.getKey());
             }
         }
-        return "Persons with no more than " + k + " friendships: " + list;
+        if (list.size() > 0) {
+            return "List: " + list;
+        } else {
+            throw new CustomException("Empty list.");
+        }
     }
 
     public static String getKLeastConnected(int k) {
@@ -108,7 +107,11 @@ public class FriendshipService {
                 list.add(elem.getKey());
             }
         }
-        return "Persons with no less than " + k + " friendships: " + list;
+        if (list.size() > 0) {
+            return "List: " + list;
+        } else {
+            throw new CustomException("Empty list.");
+        }
     }
 
     private static Map<Person, Integer> getFrequencyList() {
@@ -124,9 +127,5 @@ public class FriendshipService {
             frequencyList.put(PersonService.personList.get(i), frequency);
         }
         return frequencyList;
-    }
-
-    public static String getList(List<Person> personList) {
-        return String.valueOf(personList);
     }
 }
