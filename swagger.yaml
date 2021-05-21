@@ -1,0 +1,75 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Friendships Manager
+  description: A sample API in order to keep track of persons and friendships
+  contact:
+    name: Georgiana Druță si Daniel Martoncă
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /persons/{id}:
+    get:
+      description: Returns a persons with a specific id
+      operationId: getPerson
+      parameters:
+        - name: id
+          in: path
+          description: ID of person to show
+          required: true
+          type: string
+      responses:
+        "200":
+          description: ok
+        default:
+          description: unexpected error
+
+  /persons:
+    get:
+      description: Return all persons available in the database
+      operationId: getPersons
+      parameters:
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: array
+        default:
+          description: unexpected error
+
+    post:
+      description: Creates a new person in the database
+      operationId: createPeerson
+      parameters:
+        - name: person
+          in: body
+          description: Person to be added to the db
+          schema:
+          required: true
+      responses:
+        "200":
+          description: ok
+        default:
+          description: unexpected error
+
+    delete:
+      description: deletes a single person based on the ID supplied
+      operationId: deletePerson
+      parameters:
+        - name: id
+          in: path
+          description: ID of person to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: person deleted
+        default:
+          description: unexpected error

@@ -133,16 +133,18 @@ The task consists of:<br />
 
 The task consists of:<br />
 
-- [ ] Create REST services for inserting and reading relationships
-- [ ] Create services for determining the first k most/least connected (popular) persons in the network
+- [X] Create REST services for inserting and reading relationships
+- [X] Create services for determining the first k most/least connected (popular) persons in the network
 - [ ] Integrate the services into your previous project, invoking them using the support offered by Spring Boot
-- [ ] Handle the exceptions using a RestControllerAdvice
-
+- [X] Handle the exceptions using a RestControllerAdvice
 
 ## Bonus
 
 The task consists of:<br />
 
-- [ ] Write a service that determines in linear time all persons who are so important to the social network such that, if one of them were eliminated, the network would become disconnected.
-- [ ] Document your services using Swagger or a similar tool.
+- [X] Write a service that determines in linear time all persons who are so important to the social network such that, if one of them were eliminated, the network would become disconnected.
+- [X] Document your services using Swagger or a similar tool.
 - [ ] Secure your services using the HTTPS protocol and JSON Web Tokens
+
+![image](https://user-images.githubusercontent.com/75542257/119094062-328d4580-ba19-11eb-901d-777a17aaa047.png)
+
