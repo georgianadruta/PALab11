@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class DemoApplication {
     private static final Logger logger = Logger.getLogger(String.valueOf(DemoApplication.class));
 
-    @RequestMapping
+    @RequestMapping("")
     public String executeCommand() {
         PersonService.addPerson("0", "p0");
         PersonService.addPerson("1", "p1");

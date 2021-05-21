@@ -31,34 +31,6 @@ paths:
         default:
           description: unexpected error
 
-  /persons:
-    get:
-      description: Return all persons available in the database
-      operationId: getPersons
-      parameters:
-      responses:
-        "200":
-          description: ok
-          schema:
-            type: array
-        default:
-          description: unexpected error
-
-    post:
-      description: Creates a new person in the database
-      operationId: createPeerson
-      parameters:
-        - name: person
-          in: body
-          description: Person to be added to the db
-          schema:
-          required: true
-      responses:
-        "200":
-          description: ok
-        default:
-          description: unexpected error
-
     delete:
       description: deletes a single person based on the ID supplied
       operationId: deletePerson
@@ -73,3 +45,62 @@ paths:
           description: person deleted
         default:
           description: unexpected error
+
+  /persons/count:
+    get:
+      description: Returns the number of persons available in the database
+      operationId: getPersons
+      parameters:
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: integer
+        default:
+          description: unexpected error
+
+  /persons:
+    get:
+      description: Returns all persons available in the database
+      operationId: getPersons
+      parameters:
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: array
+        default:
+          description: unexpected error
+
+  /persons/{id}/{number}:
+    post:
+      description: Updates a new person in the database
+      operationId: updatePerson
+      parameters:
+        - name: id, name
+          in: body
+          description: modifying the name of a person
+          schema:
+          required: true
+      responses:
+        "200":
+          description: ok
+        default:
+          description: unexpected error
+
+  /persons/{name}:
+    put:
+      description: Creates a new person in the database
+      operationId: createPerson
+      parameters:
+        - name: name
+          in: body
+          description: creating a person with the given name
+          schema:
+          required: true
+      responses:
+        "200":
+          description: ok
+        default:
+          description: unexpected error
+
