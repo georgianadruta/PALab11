@@ -9,5 +9,11 @@ public class WebRestControllerAdvice {
     @ExceptionHandler(CustomException.class)
     public ResponseMessage handleNotFoundException(CustomException ex) {
         return new ResponseMessage(ex.getMessage());
+        //logger
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseMessage handleException(Exception ex) {
+        return new ResponseMessage(ex.getMessage());
     }
 }

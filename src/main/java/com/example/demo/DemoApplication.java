@@ -6,9 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.logging.Logger;
 
+@EnableSwagger2
 @RestController
 @SpringBootApplication
 public class DemoApplication {
@@ -31,7 +33,7 @@ public class DemoApplication {
         FriendshipService.addFriendship("4", "1", "5");
         FriendshipService.addFriendship("5", "1", "6");
         FriendshipService.addFriendship("6", "1", "7");
-        return "<h1>Hello world!</h1>";
+        return "Hello world!";
     }
 
     public static void main(String[] args) {
