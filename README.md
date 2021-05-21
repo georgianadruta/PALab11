@@ -127,7 +127,11 @@ The task consists of:<br />
 - [X] Test your services using the browser and/or Postman.
 ### Output
 
-![image](https://user-images.githubusercontent.com/75542257/118449491-e205a780-b6fb-11eb-9b87-3b5f7dbb9cf5.png)
+![image](https://user-images.githubusercontent.com/75542257/119125478-7ba1c180-ba3a-11eb-90e2-9bf35eb5d632.png)
+![image](https://user-images.githubusercontent.com/75542257/119125542-9116eb80-ba3a-11eb-8a2e-6a0914bb9523.png)
+![image](https://user-images.githubusercontent.com/75542257/119125625-b0ae1400-ba3a-11eb-8ea8-0b12ee8236c2.png)
+![image](https://user-images.githubusercontent.com/75542257/119125727-d1766980-ba3a-11eb-8dc8-d48d78e7168f.png)
+![image](https://user-images.githubusercontent.com/75542257/119125804-e3f0a300-ba3a-11eb-8464-1686ddd52ff1.png)
 
 ## Optional
 
@@ -137,6 +141,9 @@ The task consists of:<br />
 - [X] Create services for determining the first k most/least connected (popular) persons in the network
 - [ ] Integrate the services into your previous project, invoking them using the support offered by Spring Boot
 - [X] Handle the exceptions using a RestControllerAdvice
+  
+![image](https://user-images.githubusercontent.com/75542257/119126179-611c1800-ba3b-11eb-86ae-3dc5deba617d.png)
+![image](https://user-images.githubusercontent.com/75542257/119126246-75f8ab80-ba3b-11eb-8a02-cd99619685f8.png)
 
 ## Bonus
 
@@ -146,5 +153,6 @@ The task consists of:<br />
 - [X] Document your services using Swagger or a similar tool.
 - [ ] Secure your services using the HTTPS protocol and JSON Web Tokens
 
+![image](https://user-images.githubusercontent.com/75542257/119126299-8872e500-ba3b-11eb-90a4-917546872aa2.png)
 ![image](https://user-images.githubusercontent.com/75542257/119094062-328d4580-ba19-11eb-901d-777a17aaa047.png)
 
